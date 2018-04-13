@@ -4,7 +4,8 @@
 ## 说明
 官方scroll-view组件不支持下拉刷新，只有滚到顶部刷新的机制，所以做一个基于scroll-view的下拉刷新组件。
 
-
+## 展示
+![Android](./screenshot/1.gif)
 ## 使用
 
 ### 安装组件
