@@ -78,7 +78,7 @@ export default class ScrollViewRefresh extends wepy.page {
 
 ### 刷新重制方法
 ```javascript
-	this.$invoke('refresh', 'reset')
+this.$invoke('refresh', 'reset')
 ```
 
 ## 更多说明
