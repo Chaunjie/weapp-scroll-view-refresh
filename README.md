@@ -14,11 +14,11 @@ npm i wepy-scroll-view-refresh --save-dev
 
 ### 使用提示
 ```javascript
-	1、该组件外面必须套用scroll-y的scroll-view(暂时不支持横向滚动)
-	2、scroll-view必须使用scroll事件实时向该组件传递一个scrollTop（scroll-view的scrollTop）参数
-	3、内容区域用卡槽slot="refresh-content"部分填充
-	4、组件刷新会触发refresh事件，父页面需要在events内接收一个refresh的事件
-	5、重置刷新组件调用this.$invoke('refresh', 'reset')方法
+1、该组件外面必须套用scroll-y的scroll-view(暂时不支持横向滚动)
+2、scroll-view必须使用scroll事件实时向该组件传递一个scrollTop（scroll-view的scrollTop）参数
+3、内容区域用卡槽slot="refresh-content"部分填充
+4、组件刷新会触发refresh事件，父页面需要在events内接收一个refresh的事件
+5、重置刷新组件调用this.$invoke('refresh', 'reset')方法
 ```
 
 ### 使用示例
