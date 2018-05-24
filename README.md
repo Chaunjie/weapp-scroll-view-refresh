@@ -29,7 +29,7 @@ npm i wepy-scroll-view-refresh --save-dev
   <view class="kai-content">
     <scroll-view scroll-y="{{true}}" class="refresh-scroll__container" scroll-with-animation="{{true}}" bindscrolltolower="lower" style="width: 100vw;height:100vh;" catchscroll="scroll">
       <view style="width:100%;height:100%;">
-         <refresh :scrollTop.sync="scrollTop" :scroll.sync="scroll">
+         <refresh :scrollTop.sync="scrollTop" >
           <view slot="refresh-content" style="margin-top:45px;">
             <repeat for="{{[0,1,2,3,4,5,6,7,8,9,10]}}" index="i" item="item" key="new-{{i}}">
               <view  class="new-block">
@@ -52,8 +52,7 @@ export default class ScrollViewRefresh extends wepy.page {
   }
 
   data = {
-    scrollTop: 0,
-    scroll: false,
+    scrollTop: 0
   }
 
   methods = {
@@ -62,7 +61,6 @@ export default class ScrollViewRefresh extends wepy.page {
     },
     scroll (e) {
       this.scrollTop = e.detail.scrollTop
-      this.scroll = true
       this.$apply()
     }
   }

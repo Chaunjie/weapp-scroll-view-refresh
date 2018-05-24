@@ -1,9 +1,9 @@
 <style lang="less" src="./index.less"></style>
 <template>
   <view class="refresh-content refresh-container {{className}}" 
-  catch:touchstart="touchstart" 
-  catch:touchmove="touchmove" 
-  catch:touchend="touchend"
+  bind:touchstart="touchstart" 
+  bind:touchmove="touchmove" 
+  bind:touchend="touchend"
   animation="{{animationData}}">
   <view class="refresh-load">
     <view class="refresh-pull-arrow"></view>
@@ -18,9 +18,6 @@ export default class Refresh extends wepy.component {
   props = {
     scrollTop: {
       type: Number
-    },
-    scroll: {
-      type: Boolean
     }
   }
 
@@ -37,14 +34,14 @@ export default class Refresh extends wepy.component {
     triggerDistance: 100,
     className: '',
     animationData: {},
-    animation: {},
-    top: 0,
-    isIOS: false
+    animation: {}
   }
 
   methods = {
+    scroll (ev) {
+      console.log(ev)
+    },
     touchstart (ev) {
-      // console.log(this.scrollTop)
       if (this.isLoading) {
         return
       }
@@ -60,59 +57,34 @@ export default class Refresh extends wepy.component {
         return
       }
       let self = this
-      let touchobj = ev.touches[0]
-      let touchY = parseInt(touchobj.clientY)
-      let touchYDelta = touchY - self.firstTouchY
-      self.touchYDelta = touchYDelta
-      // self.scrollY()
-      // if (self.scrollTop === 0 && touchYDelta > 0) {
-      // }
-      /* eslint-disable */
-      if (self.initialScroll > 0 || self.scrollTop > 0 || self.scrollTop === 0 && touchYDelta < 0) {
-        self.firstTouchY = touchY
-        return
+      let moving = function() {
+        let touchobj = ev.touches[0]
+        let touchY = parseInt(touchobj.clientY)
+        let touchYDelta = touchY - self.firstTouchY
+        self.touchYDelta = touchYDelta
+        // self.scrollY()
+        // if (self.scrollTop === 0 && touchYDelta > 0) {
+        // }
+        /* eslint-disable */
+        if (self.initialScroll > 0 || self.scrollTop > 0 || self.scrollTop === 0 && touchYDelta < 0) {
+          self.firstTouchY = touchY
+          return
+        }
+        /* eslint-enable */
+        let translateVal = touchYDelta ** 0.85 // Math.pow(touchYDelta, 0.85)
+        self.animation.translate3d(0, translateVal, 0).step()
+        self.animationData = self.animation.export()
+        self.isMoved = true
+        if (touchYDelta > self.triggerDistance) {
+          self.className = 'refresh-pull-up'
+        } else {
+          self.className = 'refresh-pull-down'
+        }
       }
-      /* eslint-enable */
-      const dampingConfig = 0.8 // self.scroll && self.isIOS ? 0.8 : 0.8
-      let translateVal = touchYDelta ** dampingConfig // touchYDelta * dampingConfig// Math.pow(touchYDelta, dampingConfig)
-      self.animation.translate3d(0, translateVal, 0).step()
-      self.animationData = self.animation.export()
-      self.top = translateVal
-      self.isMoved = true
-      if (touchYDelta > self.triggerDistance) {
-        self.className = 'refresh-pull-up'
-      } else {
-        self.className = 'refresh-pull-down'
-      }
-      // let moving = function() {
-      //   let touchobj = ev.touches[0]
-      //   let touchY = parseInt(touchobj.clientY)
-      //   let touchYDelta = touchY - self.firstTouchY
-      //   self.touchYDelta = touchYDelta
-      //   // self.scrollY()
-      //   // if (self.scrollTop === 0 && touchYDelta > 0) {
-      //   // }
-      //   /* eslint-disable */
-      //   if (self.initialScroll > 0 || self.scrollTop > 0 || self.scrollTop === 0 && touchYDelta < 0) {
-      //     self.firstTouchY = touchY
-      //     return
-      //   }
-      //   /* eslint-enable */
-      //   const dampingConfig = self.scroll && self.isIOS ? 0.1 : 0.3
-      //   let translateVal = touchYDelta * dampingConfig// Math.pow(touchYDelta, dampingConfig)
-      //   self.animation.translate3d(0, translateVal, 0).step()
-      //   self.animationData = self.animation.export()
-      //   self.top = translateVal
-      //   self.isMoved = true
-      //   if (touchYDelta > self.triggerDistance) {
-      //     self.className = 'refresh-pull-up'
-      //   } else {
-      //     self.className = 'refresh-pull-down'
-      //   }
-      // }
-      // this.throttle(moving(), 0)
+      this.throttle(moving(), 10)
     },
     touchend (ev) {
+      let self = this
       if (this.isLoading || !this.isMoved) {
         this.isMoved = false
         return
@@ -120,15 +92,13 @@ export default class Refresh extends wepy.component {
       // 根据下拉高度判断是否加载
       if (this.touchYDelta >= this.triggerDistance) {
         this.isLoading = true
-        this.animation.translate3d(0, 60, 0).step({duration: 1})
+        this.animation.translate3d(0, 60, 0).step()
         this.animationData = this.animation.export()
-        this.top = 60
-        this.className = 'refreshing'
+        self.className = 'refreshing'
         this.$emit('refresh', 'success')
       } else {
         this.animation.translate3d(0, 0, 0).step({duration: 300})
         this.animationData = this.animation.export()
-        this.top = 0
         this.$emit('refresh', 'error')
       }
       this.isMoved = false
@@ -170,16 +140,6 @@ export default class Refresh extends wepy.component {
     this.animation = animation
     animation.translate3d(0, 1, 0).step()
     this.animationData = animation.export()
-    this.$apply()
-    const self = this
-    wx.getSystemInfo({
-      success: function(res) {
-        if (res.platform === 'ios') {
-          self.isIOS = true
-          self.$apply()
-        }
-      }
-    })
   }
 }
 </script>
