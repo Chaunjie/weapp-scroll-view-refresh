@@ -1,6 +1,6 @@
 {
   "name": "wepy-scroll-view-refresh",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "wechat weapp scroll-view refresh component",
   "main": "index.wpy",
   "scripts": {
