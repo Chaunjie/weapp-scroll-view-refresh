@@ -1,8 +1,8 @@
 {
-  "name": "wepy-scroll-view-refresh",
-  "version": "1.0.3",
+  "name": "weapp-scroll-view-refresh",
+  "version": "1.0.0",
   "description": "wechat weapp scroll-view refresh component",
-  "main": "index.wpy",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,12 +12,8 @@
   },
   "author": "chaunjie",
   "license": "ISC",
-  "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-1": "^6.16.0"
-  },
+  "miniprogram": "lib",
+  "devDependencies": {},
   "bugs": {
     "url": "https://github.com/Chaunjie/weapp-scroll-view-refresh/issues"
   },

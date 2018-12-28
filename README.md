@@ -1,4 +1,4 @@
-# 微信小程序 wepyjs 基于scroll-view 下拉刷新
+# 微信小程序 基于scroll-view 下拉刷新
 
 
 ## 说明
@@ -10,79 +10,45 @@
 
 ### 安装组件
 ```
-npm i wepy-scroll-view-refresh --save-dev
-```
-
-### 使用提示
-```javascript
-1、该组件外面必须套用scroll-y的scroll-view(暂时不支持横向滚动)
-2、scroll-view必须使用scroll事件实时向该组件传递一个scrollTop（scroll-view的scrollTop）参数
-3、内容区域用卡槽slot="refresh-content"部分填充
-4、组件刷新会触发refresh事件，父页面需要在events内接收一个refresh的事件
-5、重置刷新组件调用this.$invoke('refresh', 'reset')方法
+npm i weapp-scroll-view-refresh -S --production
 ```
 
 ### 使用示例
-```javascript
-// index.wpy
-<template>
-  <view class="kai-content">
-    <scroll-view scroll-y="{{true}}" class="refresh-scroll__container" scroll-with-animation="{{true}}" bindscrolltolower="lower" style="width: 100vw;height:100vh;" catchscroll="scroll">
-      <view style="width:100%;height:100%;">
-         <refresh :scrollTop.sync="scrollTop" >
-          <view slot="refresh-content" style="margin-top:45px;">
-            <repeat for="{{[0,1,2,3,4,5,6,7,8,9,10]}}" index="i" item="item" key="new-{{i}}">
-              <view  class="new-block">
-                {{i}}
-              </view>
-             </repeat>
-           </view>
-        </refresh>
-      </view>
-   </scroll-view>
-</view>
-</template>
-<script>
-import wepy from 'wepy'
-import Refresh from 'wepy-scroll-view-refresh'
-
-export default class ScrollViewRefresh extends wepy.page {
-  components = {
-    refresh: Refresh
+```json
+  usingComponents: {
+    'k-scroll': 'weapp-scroll-view-refresh/index'
   }
-
-  data = {
-    scrollTop: 0
-  }
-
-  methods = {
-    lower (index) {
-      console.log(index)
-    },
-    scroll (e) {
-      this.scrollTop = e.detail.scrollTop
-      this.$apply()
-    }
-  }
-
-  events = {
-    'refresh': (res) => {
-      if (res === 'success') {
-        setTimeout(() => {
-          this.$invoke('refresh', 'reset')
-        }, 3000)
-      }
-    }
-  }
-}
-</script>
 ```
 
-
-### 刷新重制方法
-```javascript
-this.$invoke('refresh', 'reset')
+```html
+  <k-scroll
+    id="k-scroll" 
+    custom-class="scroll-view"
+    bind:refresh="refresh"
+    bind:scroll="scroll"
+    bind:lower="lower">
+      <view>content</view>
+  </k-scroll>
 ```
+
+## API
+### 组件参数
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+|-----------|---------------------------------|-----------|-----------|-------------|
+| lowerThresHold | 距底部多远时触发 scrolltolower 事件 | `Number` | ` ` | `50` |
+| scrollWithAnimation | 在设置滚动条位置时使用动画过渡 | `Boolean` | `true` `false` | `false` |
+| enableBackToTop | iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向 | `Boolean` | `true` `false` | `false` |
+| scrollIntoView | 值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素 | `String` | ` `  | ` ` |
+
+
+### Event
+
+| 事件名 | 说明 | 参数 |
+|-----------|-----------|-----------|
+| bind:scroll | 组件滚动触发该事件 | event.detail: 回传滚动的高度 |
+| bind:scrollToLower | 组件滚动到底部触发该事件 | 无回传参数 |
+| bind:refresh | 组件刷新操作的时候触发该事件 | 无回传参数 |
+
 
 ## 更多说明
 参考[原版插件](https://github.com/Chaunjie/weapp-scroll-view-refresh)。
