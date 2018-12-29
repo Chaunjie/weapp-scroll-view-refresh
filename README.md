@@ -2,7 +2,7 @@
 
 
 ## 说明
-官方scroll-view组件不支持下拉刷新，只有滚到顶部刷新的机制，所以做一个基于scroll-view的下拉刷新组件。
+由于官方scroll-view组件只有滚到顶部刷新的机制，对用户来说不是很友好，所以做一个基于scroll-view的下拉刷新组件（该组件支持原生引用、wexp框架、wepy框架）
 
 ## 展示
 ![Android](./screenshot/1.gif)
