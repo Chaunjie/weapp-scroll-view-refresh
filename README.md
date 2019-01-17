@@ -49,6 +49,12 @@ npm i weapp-scroll-view-refresh -S --production
 | bind:scrollToLower | 组件滚动到底部触发该事件 | 无回传参数 |
 | bind:refresh | 组件刷新操作的时候触发该事件 | 无回传参数 |
 
+### 函数
+
+| 事件名 | 说明 | 参数 |
+|-----------|-----------|-----------|
+| reset | 重置刷新状态 | `-` |
+
 
 ## 更多说明
 参考[原版插件](https://github.com/Chaunjie/weapp-scroll-view-refresh)。
